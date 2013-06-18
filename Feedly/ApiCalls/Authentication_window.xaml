@@ -1,0 +1,8 @@
+﻿<Window x:Class="RSSharp.Feedly.ApiCalls.Authentication_window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Authorize with Feedly" Height="768" Width="1024">
+    <Grid Name="mainGrid">
+        
+    </Grid>
+</Window>
