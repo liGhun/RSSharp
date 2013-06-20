@@ -68,9 +68,9 @@ namespace RSSharp.Feedly.ApiCalls
             string requestUrl = string.Format("{0}/v3/auth/token", Configuration.base_url);
             Dictionary<string, string> headers = new Dictionary<string, string>();
             Dictionary<string, string> content = new Dictionary<string,string>();
-            content.Add("code", code);
+            content.Add("code", System.Web.HttpUtility.UrlEncode(code));
             content.Add("client_id",client_id);
-            content.Add("client_secret", client_secret);
+            content.Add("client_secret", System.Web.HttpUtility.UrlEncode(client_secret));
             content.Add("redirect_uri", redirect_uri);
             content.Add("grant_type",grant_type);
 
@@ -96,9 +96,9 @@ namespace RSSharp.Feedly.ApiCalls
             string requestUrl = string.Format("{0}/v3/auth/token", Configuration.base_url);
             Dictionary<string, string> headers = new Dictionary<string, string>();
             Dictionary<string, string> content = new Dictionary<string, string>();
-            content.Add("refresh_token", refresh_token);
-            content.Add("client_id", client_id);
-            content.Add("client_secret", client_secret);
+            content.Add("refresh_token", System.Web.HttpUtility.UrlEncode(refresh_token));
+            content.Add("client_id", System.Web.HttpUtility.UrlEncode(client_id));
+            content.Add("client_secret", System.Web.HttpUtility.UrlEncode(client_secret));
             content.Add("grant_type", grant_type);
 
 
