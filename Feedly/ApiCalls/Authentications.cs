@@ -24,12 +24,11 @@ namespace RSSharp.Feedly.ApiCalls
             {
                 if (url.Contains("code="))
                 {
-                    string regexParams = "code=(.*)";
-                    Regex regex = new Regex(regexParams);
-                    Match match = regex.Match(url);
-                    if (match.Success)
+                    Uri uri = new Uri(url);
+                    string code = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("code");
+                    if (!string.IsNullOrWhiteSpace(code))
                     {
-                        auth_response.code = match.Groups[1].Value;
+                        auth_response.code = code;
                         auth_response.error_message = null;
                     }
                     else
@@ -40,12 +39,11 @@ namespace RSSharp.Feedly.ApiCalls
             }
             else if (url.Contains("error="))
             {
-                string regexParams = "#error=(.*)";
-                Regex regex = new Regex(regexParams);
-                Match match = regex.Match(url);
-                if (match.Success)
+                Uri uri = new Uri(url);
+                string error = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("error");
+                if (!string.IsNullOrWhiteSpace(error))
                 {
-                    auth_response.error_message = match.Groups[1].Value;
+                    auth_response.error_message = error;
                 }
                 else
                 {
