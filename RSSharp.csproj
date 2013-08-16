@@ -64,6 +64,7 @@
     <Compile Include="Feedly\ApiCalls\Profiles.cs" />
     <Compile Include="Feedly\ApiCalls\Streams.cs" />
     <Compile Include="Feedly\ApiCalls\Subscriptions.cs" />
+    <Compile Include="Feedly\ApiCalls\Tags.cs" />
     <Compile Include="Feedly\Configuration.cs" />
     <Compile Include="Feedly\Model\Authentication.cs" />
     <Compile Include="Feedly\Model\Category.cs" />

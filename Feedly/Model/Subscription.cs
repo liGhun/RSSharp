@@ -14,5 +14,17 @@ namespace RSSharp.Feedly.Model
         public string sortid { get; set; }
         public long updated { get; set; }
         public string website { get; set; }
+
+        public override string ToString()
+        {
+            if (title != null)
+            {
+                return "Subscription: " + title;
+            }
+            else
+            {
+                return base.ToString();
+            }
+        }
     }
 }

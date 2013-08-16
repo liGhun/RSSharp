@@ -549,64 +549,57 @@ namespace RSSharp.Common
             }
             catch (WebException e)
             {
-                HttpWebResponse httpResponse = (HttpWebResponse)e.Response;
-                Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
-                System.IO.Stream data = e.Response.GetResponseStream();
-
-                string text = new System.IO.StreamReader(data).ReadToEnd();
-
-                if (!string.IsNullOrEmpty(text))
+                try
                 {
-                    try
+                    HttpWebResponse httpResponse = (HttpWebResponse)e.Response;
+                    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
+                    System.IO.Stream data = e.Response.GetResponseStream();
+
+                    string text = new System.IO.StreamReader(data).ReadToEnd();
+
+                    if (!string.IsNullOrEmpty(text))
                     {
-                        Newtonsoft.Json.Linq.JObject responseJson = Newtonsoft.Json.Linq.JObject.Parse(text);
-                        JsonSerializerSettings settings = new JsonSerializerSettings();
-                        settings.Error += delegate(object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
+
+                        try
                         {
-                            throw args.ErrorContext.Error;
-                        };
-                        if (responseJson != null)
-                        {
-                            try
+                            JsonSerializerSettings settings = new JsonSerializerSettings();
+                            settings.Error += delegate(object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
                             {
-                                ErrorResponse meta = JsonConvert.DeserializeObject<ErrorResponse>(responseJson["meta"].ToString(), settings);
-                                if (meta != null)
-                                {
-                                    Response errorResonse = new Response();
-                                    errorResonse.Success = false;
-                                    errorResonse.Status = meta.code;
-                                    errorResonse.Error = meta.error_message;
-                                    return errorResonse;
-                                }
-                            }
-                            catch (Exception exp)
+                                throw args.ErrorContext.Error;
+                            };
+                            ErrorResponse error = JsonConvert.DeserializeObject<ErrorResponse>(text, settings);
+                            if (error != null)
                             {
                                 Response errorResonse = new Response();
                                 errorResonse.Success = false;
-                                errorResonse.Error = exp.Message;
+                                errorResonse.Error = error.errorMessage;
+                                errorResonse.Content = text;
+                                if(!string.IsNullOrEmpty(errorResonse.Error)) {
+                                    errorResonse.isErrorMessageByAPI = true;
+                                }
                                 return errorResonse;
                             }
                         }
-                    }
-                    catch (Exception exp)
-                    {
-                        Response errorResonse = new Response();
-                        errorResonse.Success = false;
-                        errorResonse.Error = exp.Message;
-                        return errorResonse;
+                        catch (Exception exp)
+                        {
+                            Response errorResonse = new Response();
+                            errorResonse.Success = false;
+                            errorResonse.Error = exp.Message;
+                            return errorResonse;
+                        }
                     }
                 }
 
-            }
-            catch (System.Exception e)
-            {
-                // some proxys have problems with Continue-100 headers
-                request.ProtocolVersion = HttpVersion.Version10;
-                request.ServicePoint.Expect100Continue = false;
-                System.Net.ServicePointManager.Expect100Continue = false;
-                HttpWebResponse responseTemp = (HttpWebResponse)request.GetResponse();
-                response = responseTemp;
-                System.Console.WriteLine(e.Message);
+                catch (System.Exception exp2)
+                {
+                    // some proxys have problems with Continue-100 headers
+                    request.ProtocolVersion = HttpVersion.Version10;
+                    request.ServicePoint.Expect100Continue = false;
+                    System.Net.ServicePointManager.Expect100Continue = false;
+                    HttpWebResponse responseTemp = (HttpWebResponse)request.GetResponse();
+                    response = responseTemp;
+                    System.Console.WriteLine(exp2.Message);
+                }
             }
 
             Response returnValue = new Response();
@@ -698,10 +691,10 @@ namespace RSSharp.Common
 
         public class ErrorResponse
         {
-            public string code { get; set; }
-            public string error_message { get; set; }
-            public string error_slug { get; set; }
-            public string error_id { get; set; }
+            public int errorCode { get; set; }
+            public string errorMessage { get; set; }
+            public string errorId { get; set; }
+            public bool isErrorMessageByAPI { get; set; }
         }
 
         public class Response
@@ -710,6 +703,7 @@ namespace RSSharp.Common
             public string Status { get; set; }
             public string Error { get; set; }
             public string Content { get; set; }
+            public bool isErrorMessageByAPI { get; set; }
             public HttpStatusCode StatusCode { get; set; }
             public WebHeaderCollection FullHeaders { get; set; }
             public RateLimits rateLimits { get; set; }

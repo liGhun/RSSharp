@@ -59,7 +59,7 @@ namespace RSSharp.Feedly.ApiCalls
 
         private static bool marker_action(string access_token, string action, string type, List<string> entry_ids = null, List<string> feed_ids = null, List<string> category_ids = null, long? asOf = null)
         {
-            string requestUrl = string.Format("{0}/v3/markers", Configuration.base_url);
+            string requestUrl = string.Format("{0}/v3/markers?ct={1}", Configuration.base_url, System.Web.HttpUtility.UrlEncode(Configuration.user_agent));
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Authorization", string.Format("OAuth {0}", access_token));
 
@@ -84,13 +84,13 @@ namespace RSSharp.Feedly.ApiCalls
 
         public list_of_unread_counts get_list_of_unread_counts(string access_token, bool? autorefresh = null)
         {
-            string requestUrl = string.Format("{0}/v3/markers/counts", Configuration.base_url);
+            string requestUrl = string.Format("{0}/v3/markers/counts?ct={1}", Configuration.base_url, System.Web.HttpUtility.UrlEncode(Configuration.user_agent));
             Dictionary<string, object> parameter = new Dictionary<string, object>();
             parameter.Add("autorefresh", autorefresh);
             string parameter_string = Common.GetParameter.get(parameter);
             if (!string.IsNullOrWhiteSpace(parameter_string))
             {
-                requestUrl += "?" + parameter_string;
+                requestUrl += "&" + parameter_string;
             }
 
             Dictionary<string, string> headers = new Dictionary<string, string>();

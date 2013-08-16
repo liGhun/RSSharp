@@ -12,7 +12,7 @@ namespace RSSharp.Feedly.ApiCalls
     {
         public static Feed get(string access_token, string feed_id)
         {
-            string requestUrl = string.Format("{0}/v3/feeds/{1}", Configuration.base_url, feed_id);
+            string requestUrl = string.Format("{0}/v3/feeds/{1}?ct={2}", Configuration.base_url, System.Web.HttpUtility.UrlEncode(feed_id), System.Web.HttpUtility.UrlEncode(Configuration.user_agent));
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Authorization", string.Format("OAuth {0}", access_token));
 
@@ -31,7 +31,7 @@ namespace RSSharp.Feedly.ApiCalls
 
         public static List<Feed> mget(string access_token, List<string> feed_ids)
         {
-            string requestUrl = string.Format("{0}/v3/feeds/.mget", Configuration.base_url);
+            string requestUrl = string.Format("{0}/v3/feeds/.mget?ct={1}", Configuration.base_url, System.Web.HttpUtility.UrlEncode(Configuration.user_agent));
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Authorization", string.Format("OAuth {0}", access_token));
 

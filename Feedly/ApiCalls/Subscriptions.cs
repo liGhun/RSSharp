@@ -13,7 +13,7 @@ namespace RSSharp.Feedly.ApiCalls
     {
         public static List<Subscription> get(string access_token)
         {
-            string requestUrl = string.Format("{0}/v3/subscriptions", Configuration.base_url);
+            string requestUrl = string.Format("{0}/v3/subscriptions?ct={1}", Configuration.base_url, System.Web.HttpUtility.UrlEncode(Configuration.user_agent));
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Authorization", string.Format("OAuth {0}", access_token));
 
@@ -31,7 +31,7 @@ namespace RSSharp.Feedly.ApiCalls
         }
 
         public static bool subscribe(string access_token, string id, string title, string sortid, List<Category> categories) {
-            string requestUrl = string.Format("{0}/v3/subscriptions", Configuration.base_url);
+            string requestUrl = string.Format("{0}/v3/subscriptions&ct={1}", Configuration.base_url, System.Web.HttpUtility.UrlEncode(Configuration.user_agent));
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Authorization", string.Format("OAuth {0}", access_token));
 
@@ -62,7 +62,7 @@ namespace RSSharp.Feedly.ApiCalls
 
         public static bool update(string access_token, string id, string title, string sortid, List<Category> categories)
         {
-            string requestUrl = string.Format("{0}/v3/subscriptions", Configuration.base_url);
+            string requestUrl = string.Format("{0}/v3/subscriptions??ct={1}", Configuration.base_url, System.Web.HttpUtility.UrlEncode(Configuration.user_agent));
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Authorization", string.Format("OAuth {0}", access_token));
 
@@ -90,18 +90,6 @@ namespace RSSharp.Feedly.ApiCalls
             return response.Success;
         }
 
-   /*     public static bool update(string access_token, string id, string title, string sortid, List<Category> categories)
-        {
-            string requestUrl = string.Format("{0}/v3/subscriptions", Configuration.base_url);
-            Dictionary<string, string> headers = new Dictionary<string, string>();
-            headers.Add("Authorization", string.Format("OAuth {0}", access_token));
-
-            Common.HTTPCommunications.Response response = Common.HTTPCommunications.SendDeleteRequest(requestUrl, headers);
-
-            return response.Success;
-
-        }
-    * */
 
         private class json_parameter_subscribe
         {

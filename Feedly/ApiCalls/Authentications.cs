@@ -12,7 +12,7 @@ namespace RSSharp.Feedly.ApiCalls
     public class Authentications
     {
         public static string get_authentication_url(string response_type = "code", string client_id = "", string redirect_uri = "", string scope ="https://cloud.feedly.com/subscriptions", string state = "") {
-            return string.Format("{0}/v3/auth/auth?response_type={1}&client_id={2}&redirect_uri={3}&scope={4}&state={5}", RSSharp.Feedly.Configuration.base_url, response_type, System.Web.HttpUtility.UrlEncode(client_id), System.Web.HttpUtility.UrlEncode(redirect_uri), System.Web.HttpUtility.UrlEncode(scope), System.Web.HttpUtility.UrlEncode(state));
+            return string.Format("{0}/v3/auth/auth?ct={1}&response_type={2}&client_id={3}&redirect_uri={4}&scope={5}&state={6}", RSSharp.Feedly.Configuration.base_url, System.Web.HttpUtility.UrlEncode(Configuration.user_agent), response_type, System.Web.HttpUtility.UrlEncode(client_id), System.Web.HttpUtility.UrlEncode(redirect_uri), System.Web.HttpUtility.UrlEncode(scope), System.Web.HttpUtility.UrlEncode(state));
         }
 
 
@@ -63,7 +63,7 @@ namespace RSSharp.Feedly.ApiCalls
             json.redirect_uri = redirect_uri;
             json.grant_type = grant_type;
 
-            string requestUrl = string.Format("{0}/v3/auth/token", Configuration.base_url);
+            string requestUrl = string.Format("{0}/v3/auth/token?ct={1}", Configuration.base_url, System.Web.HttpUtility.UrlEncode(Configuration.user_agent));
             Dictionary<string, string> headers = new Dictionary<string, string>();
             Dictionary<string, string> content = new Dictionary<string,string>();
             content.Add("code", System.Web.HttpUtility.UrlEncode(code));
@@ -91,7 +91,7 @@ namespace RSSharp.Feedly.ApiCalls
 
         public static Authentication.token get_access_token_by_refresh_token(string refresh_token, string client_id, string client_secret, string grant_type)
         {
-            string requestUrl = string.Format("{0}/v3/auth/token", Configuration.base_url);
+            string requestUrl = string.Format("{0}/v3/auth/token?ct={1}", Configuration.base_url, System.Web.HttpUtility.UrlEncode(Configuration.user_agent));
             Dictionary<string, string> headers = new Dictionary<string, string>();
             Dictionary<string, string> content = new Dictionary<string, string>();
             content.Add("refresh_token", System.Web.HttpUtility.UrlEncode(refresh_token));

@@ -51,8 +51,49 @@ namespace RSSharp.Feedly.ApiCalls
             this.mainGrid.Children.Add(host);
 
             webBrowserAuthorization.Navigated += webBrowserAuthorization_Navigated;
+            webBrowserAuthorization.Navigating += webBrowserAuthorization_Navigating;
             authUrl = Authentications.get_authentication_url(response_type: response_type, client_id: clientId, redirect_uri: redirectUrl, scope: scope, state: state);
             
+        }
+
+        void webBrowserAuthorization_Navigating(object sender, System.Windows.Forms.WebBrowserNavigatingEventArgs e)
+        {
+            return;
+            if (!initialLogoutCompleted)
+            {
+                return;
+            }
+            if (e != null)
+            {
+                if (e.Url.AbsoluteUri.Contains("code="))
+                {
+                    complete = true;
+
+                    Model.Authentication.auth_response response = Authentications.parse_authentication_reponse(e.Url.AbsoluteUri);
+                    AuthEventArgs eventArgs = new AuthEventArgs();
+                    if (response.success)
+                    {
+                        Model.Authentication.token token = Authentications.get_access_token(response.code, client_id, client_secret, redirect_uri);
+                        if (token != null)
+                        {
+                            eventArgs.success = true;
+                            eventArgs.token = token;
+                        }
+                        else
+                        {
+                            eventArgs.error = "Unable to retrieve access token from code";
+                        }
+                    }
+                    else
+                    {
+                        eventArgs.error = response.error_message;
+                    }
+                    AuthSuccess(this, eventArgs);
+                    Close();
+                }
+
+
+            }
         }
 
         public void startAuthorization()
@@ -69,6 +110,9 @@ namespace RSSharp.Feedly.ApiCalls
 
         void webBrowserAuthorization_Navigated(object sender, System.Windows.Forms.WebBrowserNavigatedEventArgs e)
         {
+         
+            //HideScriptErrors(webBrowserAuthorization, true);
+        
             if (!initialLogoutCompleted)
             {
                 initialLogoutCompleted = true;
@@ -109,6 +153,22 @@ namespace RSSharp.Feedly.ApiCalls
                     
                 }
             }
+        }
+
+
+        public void HideScriptErrors(WebBrowser wb, bool Hide)
+        {
+            FieldInfo fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (fiComWebBrowser == null) return;
+
+            object objComWebBrowser = fiComWebBrowser.GetValue(wb);
+
+            if (objComWebBrowser == null) return;
+
+            objComWebBrowser.GetType().InvokeMember(
+
+            "Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { Hide });
+
         }
 
         

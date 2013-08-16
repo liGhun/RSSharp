@@ -18,6 +18,18 @@ namespace RSSharp.Feedly.Model
         public bool curated { get; set; }
         public int subscribers { get; set; }
         public string state { get; set; }
+
+        public override string ToString()
+        {
+            if (title != null)
+            {
+                return "Feed: " + title;
+            }
+            else
+            {
+                return base.ToString();
+            }
+        }
     }
 
     

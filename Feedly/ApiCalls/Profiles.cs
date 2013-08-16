@@ -12,7 +12,7 @@ namespace RSSharp.Feedly.ApiCalls
     {
         public static Profile get(string access_token)
         {
-            string requestUrl = string.Format("{0}/v3/profile", Configuration.base_url);
+            string requestUrl = string.Format("{0}/v3/profile?ct={1}", Configuration.base_url, System.Web.HttpUtility.UrlEncode(Configuration.user_agent));
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Authorization", string.Format("OAuth {0}", access_token));
 
