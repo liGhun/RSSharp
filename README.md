@@ -63,8 +63,7 @@ Here is how it works by the example in Menere:
             }
             else
             {
-                System.Windows.MessageBox.Show(e.error, "Error adding
-Feedly account");
+                System.Windows.MessageBox.Show(e.error, "Error adding Feedly account");
             }
         }
 
