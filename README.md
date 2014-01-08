@@ -48,16 +48,13 @@ Here is how it works by the example in Menere:
 		public void add_new_account()
         {
             //RSSharp.Feedly.Configuration.activate_sandbox();
-            RSSharp.Feedly.ApiCalls.Authentication_window auth_window =
-new RSSharp.Feedly.ApiCalls.Authentication_window("*********",
-"**********", "http://yourRedirectUri");
+            RSSharp.Feedly.ApiCalls.Authentication_window auth_window = new RSSharp.Feedly.ApiCalls.Authentication_window("*********", "**********", "http://yourRedirectUri");
             auth_window.AuthSuccess += auth_window_AuthSuccess;
             auth_window.Show();
             auth_window.startAuthorization();
         }
 
-        void auth_window_AuthSuccess(object sender,
-RSSharp.Feedly.ApiCalls.Authentication_window.AuthEventArgs e)
+        void auth_window_AuthSuccess(object sender, RSSharp.Feedly.ApiCalls.Authentication_window.AuthEventArgs e)
         {
             if (e.success)
             {
