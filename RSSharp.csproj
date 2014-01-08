@@ -52,6 +52,8 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AOLreader\ApiCalls\Authentications.cs" />
+    <Compile Include="AOLreader\Model\Authentication.cs" />
     <Compile Include="Common\GetParameter.cs" />
     <Compile Include="Common\HttpCommunications.cs" />
     <Compile Include="Feedly\ApiCalls\Authentications.cs" />
@@ -74,6 +76,24 @@
     <Compile Include="Feedly\Model\Profile.cs" />
     <Compile Include="Feedly\Model\Subscription.cs" />
     <Compile Include="Feedly\Model\Tag.cs" />
+    <Compile Include="AOLreader\ApiCalls\Authentication_window.xaml.cs">
+      <DependentUpon>Authentication_window.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GeneralGoogleReaderAPI\ApiCalls\Users.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\General.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Annotation.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Article.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Category.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Comment.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Content.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Count.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Enclosure.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Feed.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Link.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Origin.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\Tag.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\User.cs" />
+    <Compile Include="GeneralGoogleReaderAPI\Model\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -81,10 +101,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AOLreader\ApiCalls\Authentication_window.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
